@@ -20,17 +20,28 @@ try {
                 // Handle insertion
                 $username = $_POST["username"];
                 $email = $_POST["email"];
+                $id = $_POST["userid"];
                 $insertSQL="";
                 // Perform the insertion into the "users" table
                 if (empty($username) || empty($email)) {
                     $message = "Enter Username or Email to insert";
-                } else {
+                } elseif(!empty($username) && !empty($email) && empty($id)) {
                     $insertSQL = "INSERT INTO users (username, email) VALUES (:username, :email)";
+                } else {
+                    $insertSQL = "INSERT INTO users (id, username, email) VALUES (:id, :username, :email)";
                 }
+                
                 if (!empty($insertSQL)) {
                     $stmt = $pdo->prepare($insertSQL);
-                    $stmt->bindParam(':username', $username);
-                    $stmt->bindParam(':email', $email);
+                    if (!empty($id)) {
+                        $stmt->bindParam(':id', $id);
+                    }
+                    if (!empty($email)) {
+                        $stmt->bindParam(':email', $email);
+                    }
+                    if (!empty($username)) {
+                        $stmt->bindParam(':username', $username);
+                    }
                     $stmt->execute();
                     $message = "Data inserted successfully!";
                 }
