@@ -259,9 +259,9 @@ try {
             <input type="radio" name="dbname" id="mysql" value="mysql" onclick="changeDBname(this)" checked>
             <label for="mysql">MySQL</label>
             <input type="radio" name="dbname" id="pgsql" value="pgsql" onclick="changeDBname(this)">
-            <label for="pgsql">MySQL</label>
-            <input type="radio" name="dbname" id="mariadb" value="mariadb" onclick="changeDBname(this)">
-            <label for="mariadb">MySQL</label>
+            <label for="pgsql">PostGreSQL</label>
+            <input type="radio" name="dbname" id="mongodb" value="mongodb" onclick="changeDBname(this)">
+            <label for="mariadb">MongoDB</label>
         </div>
         <div class="quadrant quad2"></div>
         <div class="quadrant quad3">
