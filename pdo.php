@@ -216,16 +216,9 @@ try {
             font-size: 2.5rem;
             top:15%;
         }
-        .quad2 {
+        .quad2,.quad4 {
             width: 300px; /* Fixed width for the div */
-            height: 150px; /* Fixed height for the div */
-            border: 1px solid #ccc;
-            overflow: auto;
-        }
-
-        .quad4 {
-            width: 300px; /* Fixed width for the div */
-            height: 250px; /* Fixed height for the div */
+            height: 200px; /* Fixed height for the div */
             overflow: auto;
         }
 
