@@ -13,6 +13,13 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $createTableSQL = "CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL
+    )";
+    $pdo->exec($createTableSQL);
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check which form action is being performed (insert, update, or delete)
         if (isset($_POST["action"])) {
@@ -275,12 +282,13 @@ try {
     <div class="container">
         <div class="quadrant quad1">
             <h1 >Database List</h1>
-            <input type="radio" name="dbname" id="mysql" value="mysql" onclick="changeDBname(this)" checked>
+            <input type="radio" name="dbname" id="mysql" value="mysql" checked>
             <label for="mysql">MySQL</label>
-            <input type="radio" name="dbname" id="pgsql" value="pgsql" onclick="changeDBname(this)">
+            <input type="radio" name="dbname" id="pgsql" value="pgsql" ">
             <label for="pgsql">PostGreSQL</label>
-            <input type="radio" name="dbname" id="mongodb" value="mongodb" onclick="changeDBname(this)">
-            <label for="mariadb">MongoDB</label>
+            <input type="radio" name="dbname" id="mongodb" value="mongodb" ">
+            <label for="mongodb">MongoDB</label>
+            <div id="checkname" style="display:none" ></div>
         </div>
         <div class="quadrant quad2" id="output"></div>
         <div class="quadrant quad3">
@@ -291,6 +299,7 @@ try {
                 <label for="insert">Insert</label>
                 <input type="radio" name="operation" id="delete" value="delete">
                 <label for="delete">Delete</label>
+                
             </div>
             <div class="content">
                 <?php if (!empty($message)) : ?>
@@ -334,23 +343,15 @@ try {
     const radioButtons = document.querySelectorAll('input[name="operation"]');
     const contentDiv = document.querySelector('.content');
     const radioButtonsDbname = document.querySelectorAll('input[name="dbname"]');
-    var selectedDbname = '1';
-    function changeDBname(rbDBname) {
-        if (rbDBname.checked) {
-            selectedDbname = rbDBname.value;
-        }
-        // console.log(selectedDbname)
-    }
+    var selectedDbname = "mysql";
 
-    // radioButtonsDbname.forEach(radioButtonDbname => {
-    //     radioButtonDbname.addEventListener('change', function () {
-    //         if (this.checked) {
-    //             selectedDbname = this.value;
-    //         }
-    //     });
-    // });
-
-    console.log(selectedDbname)
+    radioButtonsDbname.forEach(radioButtonDbname => {
+        radioButtonDbname.addEventListener('change', function () {
+            if (this.checked) {
+                selectedDbname = this.value;
+            }      
+        });
+    });
 
     const insertContent = `
                             <form action="pdo.php" method="post">
@@ -419,10 +420,10 @@ try {
         .then(response => response.text())
         .then(data => {
             // Display the fetched HTML content in the output div
-            outputDiv.innerText = data;
+            outputDiv.textContent = data;
         })
         .catch(error => {
-            outputDiv.innerText = 'Error fetching content: ' + error.message;
+            outputDiv.textContent = 'Error fetching content: ' + error.message;
         });
 });
 
