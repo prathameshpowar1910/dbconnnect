@@ -91,7 +91,7 @@ try {
                 $id = $_POST["userid"];
                 $deleteSQL="";
                 // Perform the deletion from the "users" table
-                if (!empty($username) && !empty($id))  {
+                if (!empty($username) && !empty($id) || empty($username) && !empty($id)) {
                     $deleteSQL = "DELETE FROM users WHERE id = :id";
                 } elseif(!empty($username) && empty($id)) {
                     $deleteSQL = "DELETE FROM users WHERE username = :username";
@@ -148,8 +148,9 @@ try {
             min-height: 50%;
             box-sizing: border-box;
             border: 1px solid #ccc;
-            overflow: hidden;
+            overflow:hidden;
             position: relative;
+
         }
 
         .options {
@@ -215,13 +216,19 @@ try {
             font-size: 2.5rem;
             top:15%;
         }
+        .quad2 {
+            width: 300px; /* Fixed width for the div */
+            height: 150px; /* Fixed height for the div */
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
 
-        /* .quad4 {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        } */
+        .quad4 {
+            width: 300px; /* Fixed width for the div */
+            height: 250px; /* Fixed height for the div */
+            overflow: auto;
+        }
+
         table {
             /* top: 0;
             left: 0; */
@@ -230,6 +237,7 @@ try {
             /* width: 100%; */
             border-collapse: collapse;
             /* margin-top:5px; */
+            margin-right:20px
         }
 
         table, th, td {
@@ -281,7 +289,7 @@ try {
             <input type="radio" name="dbname" id="mongodb" value="mongodb" onclick="changeDBname(this)">
             <label for="mariadb">MongoDB</label>
         </div>
-        <div class="quadrant quad2"></div>
+        <div class="quadrant quad2" id="output"></div>
         <div class="quadrant quad3">
             <div class="options" >
                 <input type="radio" name="operation" id="update" value="update">
@@ -410,6 +418,24 @@ try {
             })
             .catch(error => console.error(error));
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const outputDiv = document.getElementById('output');
+
+    fetch('pdo.php')
+        .then(response => response.text())
+        .then(data => {
+            // Display the fetched HTML content in the output div
+            outputDiv.innerText = data;
+        })
+        .catch(error => {
+            outputDiv.innerText = 'Error fetching content: ' + error.message;
+        });
+});
+
+
+
+
 </script>
 </html>
 
