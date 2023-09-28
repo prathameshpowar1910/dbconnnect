@@ -7,10 +7,15 @@ $host = "localhost"; // Change to your database host
 $dbname = "newphp"; // Change to your database name
 $usernameDB = "root"; // Change to your database username
 $passwordDB = "root"; // Change to your database password
+$databasetype = "mysql";
+
+if (isset($_POST["dbname"])) {
+    $databasetype = $_POST["dbname"];
+}
 
 try {
     // Create a PDO instance
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
+    $pdo = new PDO("$databasetype:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $createTableSQL = "CREATE TABLE IF NOT EXISTS users (
@@ -276,19 +281,26 @@ try {
         .quadrant:nth-child(4) {
             background-color: #c0c0c0;
         }
+
+        #dbtype {
+            display:none;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <div class="quadrant quad1">
             <h1 >Database List</h1>
+            <form action="pdo.php" method="post" >
             <input type="radio" name="dbname" id="mysql" value="mysql" checked>
             <label for="mysql">MySQL</label>
             <input type="radio" name="dbname" id="pgsql" value="pgsql" ">
             <label for="pgsql">PostGreSQL</label>
-            <input type="radio" name="dbname" id="mongodb" value="mongodb" ">
-            <label for="mongodb">MongoDB</label>
-            <div id="checkname" style="display:none" ></div>
+            <input type="radio" name="dbname" id="mariadb" value="mariadb" ">
+            <label for="mariadb">MariaDB</label><br>
+            <input type="submit" value="Choose this DB">
+            </form>
         </div>
         <div class="quadrant quad2" id="output"></div>
         <div class="quadrant quad3">
@@ -299,7 +311,7 @@ try {
                 <label for="insert">Insert</label>
                 <input type="radio" name="operation" id="delete" value="delete">
                 <label for="delete">Delete</label>
-                
+                <div id="dbtype"></div>
             </div>
             <div class="content">
                 <?php if (!empty($message)) : ?>
@@ -349,6 +361,7 @@ try {
         radioButtonDbname.addEventListener('change', function () {
             if (this.checked) {
                 selectedDbname = this.value;
+                dbtype.innerText = selectedDbname;
             }      
         });
     });
@@ -363,6 +376,7 @@ try {
                                 <input type="email" name="email" id="email" placeholder="Enter Email">
                                 <input type="submit" value="Insert">
                                 <input type="hidden" name="action" value="insert">
+                                
                             </form>
                         `;
     const deleteContent = `
@@ -428,8 +442,6 @@ try {
 });
 
 
-
-
-</script>
+</scriptdbtype.innerText>
 </html>
 
