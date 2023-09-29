@@ -4,20 +4,23 @@ $email = "";
 $message = "Choose an operation to perform.";
 // Database configuration
 $host = "localhost"; // Change to your database host
-$dbname = "newphp"; // Change to your database name
+// $dbname = "newphp"; // Change to your database name
 $usernameDB = "root"; // Change to your database username
 $passwordDB = "root"; // Change to your database password
-$databasetype = "mysql";
 
-if (isset($_POST["dbname"])) {
-    $databasetype = $_POST["dbname"];
-}
 
 try {
     // Create a PDO instance
-    $pdo = new PDO("$databasetype:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
+    $pdo = new PDO("mysql:host=$host", $usernameDB, $passwordDB);
+    // $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $databaseName = "exp5DB";
+    $createDatabaseSQL = "CREATE DATABASE IF NOT EXISTS $databaseName";
+
+    // Execute the SQL query
+    $pdo->exec($createDatabaseSQL);
+    $pdo->exec("USE $databaseName");
     $createTableSQL = "CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(255) NOT NULL,
@@ -131,14 +134,15 @@ try {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Databse Connectivity WP Prathamesh Powar</title>
-<style>       
+    <title>Document</title>
+</head>
+<style>
+
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,700;1,300&family=Poppins:wght@300;400;600&display=swap');
 
 * {
@@ -215,24 +219,6 @@ try {
             box-sizing: border-box;
             margin-bottom: 6px;
         }
-        .quad1 {
-            display: flex;
-            /* flex-direction: column; */
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            gap:10px;
-        }
-        .quad1 h1{
-            position: absolute;
-            font-size: 2.5rem;
-            top:15%;
-        }
-        .quad2,.quad4 {
-            width: 300px; /* Fixed width for the div */
-            height: 200px; /* Fixed height for the div */
-            overflow: auto;
-        }
 
         table {
             /* top: 0;
@@ -266,44 +252,10 @@ try {
         tbody tr:hover {
             background-color: #ddd;
         }
-        .quadrant:nth-child(1) {
-            background-color: #f2f2f2;
-        }
-
-        .quadrant:nth-child(2) {
-            background-color: #e0e0e0;
-        }
-
-        .quadrant:nth-child(3) {
-            background-color: #d0d0d0;
-        }
-
-        .quadrant:nth-child(4) {
-            background-color: #c0c0c0;
-        }
-
-        #dbtype {
-            display:none;
-        }
-
-    </style>
-</head>
+</style>
 <body>
     <div class="container">
-        <div class="quadrant quad1">
-            <h1 >Database List</h1>
-            <form action="pdo.php" method="post" >
-            <input type="radio" name="dbname" id="mysql" value="mysql" checked>
-            <label for="mysql">MySQL</label>
-            <input type="radio" name="dbname" id="pgsql" value="pgsql" ">
-            <label for="pgsql">PostGreSQL</label>
-            <input type="radio" name="dbname" id="mariadb" value="mariadb" ">
-            <label for="mariadb">MariaDB</label><br>
-            <input type="submit" value="Choose this DB">
-            </form>
-        </div>
-        <div class="quadrant quad2" id="output"></div>
-        <div class="quadrant quad3">
+    <div class="quadrant quad3">
             <div class="options" >
                 <input type="radio" name="operation" id="update" value="update">
                 <label for="update">Update</label>
@@ -323,7 +275,8 @@ try {
             </div>
             
         </div>
-        <div class="quadrant quad4">
+
+    <div class="quadrant quad4">
             <table>
                 <thead>
                     <tr>
@@ -351,23 +304,13 @@ try {
         </div>
     </div>
 </body>
+
 <script>
     const radioButtons = document.querySelectorAll('input[name="operation"]');
     const contentDiv = document.querySelector('.content');
-    const radioButtonsDbname = document.querySelectorAll('input[name="dbname"]');
-    var selectedDbname = "mysql";
-
-    radioButtonsDbname.forEach(radioButtonDbname => {
-        radioButtonDbname.addEventListener('change', function () {
-            if (this.checked) {
-                selectedDbname = this.value;
-                dbtype.innerText = selectedDbname;
-            }      
-        });
-    });
 
     const insertContent = `
-                            <form action="pdo.php" method="post">
+                            <form action="exp5.php" method="post">
                                 <label for="userid">User-Id</label>
                                 <input type="text" name="userid" id="userid" placeholder="Enter Userid">
                                 <label for="username">Username</label>
@@ -380,7 +323,7 @@ try {
                             </form>
                         `;
     const deleteContent = `
-                            <form action="pdo.php" method="post">
+                            <form action="exp5.php" method="post">
                                 <label for="userid">User-Id</label>
                                 <input type="text" name="userid" id="userid" placeholder="Enter Userid">
                                 <label for="username">Username</label>
@@ -391,7 +334,7 @@ try {
                         `;
     
     const updateContent = `
-                            <form action="pdo.php" method="post">
+                            <form action="exp5.php" method="post">
                                 <label for="userid">User-Id</label>
                                 <input type="text" name="userid" id="userid" placeholder="Enter Userid">
                                 <label for="username">Username</label>
@@ -427,21 +370,5 @@ try {
             .catch(error => console.error(error));
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-    const outputDiv = document.getElementById('output');
-
-    fetch('pdo.php')
-        .then(response => response.text())
-        .then(data => {
-            // Display the fetched HTML content in the output div
-            outputDiv.textContent = data;
-        })
-        .catch(error => {
-            outputDiv.textContent = 'Error fetching content: ' + error.message;
-        });
-});
-
-
 </script>
 </html>
-
