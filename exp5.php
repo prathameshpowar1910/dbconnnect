@@ -362,7 +362,7 @@ try {
     });
 
     showUpdatedTable.addEventListener("click", function () {
-        fetch('refresh.php')
+        fetch('refreshexp5.php')
             .then(response => response.text())
             .then(data => {
                 document.querySelector("table tbody").innerHTML = data;
