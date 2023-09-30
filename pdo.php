@@ -12,6 +12,7 @@ $databasetype = "mysql";
 if (isset($_POST["dbname"])) {
     $databasetype = $_POST["dbname"];
 }
+echo $databasetype;
 
 try {
     // Create a PDO instance
@@ -293,7 +294,7 @@ try {
         <div class="quadrant quad1">
             <h1 >Database List</h1>
             <form action="pdo.php" method="post" >
-            <input type="radio" name="dbname" id="mysql" value="mysql" checked>
+            <input type="radio" name="dbname" id="mysql" value="mysql" >
             <label for="mysql">MySQL</label>
             <input type="radio" name="dbname" id="pgsql" value="pgsql" ">
             <label for="pgsql">PostGreSQL</label>
