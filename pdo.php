@@ -16,7 +16,7 @@ echo $databasetype;
 
 try {
     // Create a PDO instance
-    $pdo = new PDO("$databasetype:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $createTableSQL = "CREATE TABLE IF NOT EXISTS users (
@@ -283,10 +283,51 @@ try {
             background-color: #c0c0c0;
         }
 
-        #dbtype {
-            display:none;
-        }
 
+        .dblist { align-items: center;
+    appearance: none;
+    background-color: #FCFCFD;
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #36395A;
+    cursor: pointer;
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    width: 90%;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    transition: box-shadow .15s, transform .15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+    margin: 10px;
+    margin-left: 40px;
+}
+
+.dblist:focus {
+    box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+
+.dblist:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+    transform: translateY(-2px);
+}
+
+.dblist:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
+}
     </style>
 </head>
 <body>
@@ -294,13 +335,13 @@ try {
         <div class="quadrant quad1">
             <h1 >Database List</h1>
             <form action="pdo.php" method="post" >
-            <input type="radio" name="dbname" id="mysql" value="mysql" >
-            <label for="mysql">MySQL</label>
-            <input type="radio" name="dbname" id="pgsql" value="pgsql" ">
-            <label for="pgsql">PostGreSQL</label>
-            <input type="radio" name="dbname" id="mariadb" value="mariadb" ">
-            <label for="mariadb">MariaDB</label><br>
-            <input type="submit" value="Choose this DB">
+            <input class="dblist" type="submit" name="dbname" id="mysql" value="mysql" >
+            <!-- <label for="mysql">MySQL</label> -->
+            <input class="dblist" type="submit" name="dbname" id="pgsql" value="pgsql" ">
+            <!-- <label for="pgsql">PostGreSQL</label> -->
+            <input class="dblist" type="submit" name="dbname" id="mariadb" value="mariadb" ">
+            <!-- <label for="mariadb">MariaDB</label><br> -->
+            <!-- <input type="submit" value="Choose this DB"> -->
             </form>
         </div>
         <div class="quadrant quad2" id="output"></div>
@@ -312,7 +353,7 @@ try {
                 <label for="insert">Insert</label>
                 <input type="radio" name="operation" id="delete" value="delete">
                 <label for="delete">Delete</label>
-                <div id="dbtype"></div>
+
             </div>
             <div class="content">
                 <?php if (!empty($message)) : ?>
