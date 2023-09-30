@@ -397,16 +397,6 @@ try {
     const radioButtons = document.querySelectorAll('input[name="operation"]');
     const contentDiv = document.querySelector('.content');
     const radioButtonsDbname = document.querySelectorAll('input[name="dbname"]');
-    var selectedDbname = "mysql";
-
-    radioButtonsDbname.forEach(radioButtonDbname => {
-        radioButtonDbname.addEventListener('change', function () {
-            if (this.checked) {
-                selectedDbname = this.value;
-                dbtype.innerText = selectedDbname;
-            }      
-        });
-    });
 
     const insertContent = `
                             <form action="pdo.php" method="post">
