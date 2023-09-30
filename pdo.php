@@ -14,6 +14,12 @@ if (isset($_POST["dbname"])) {
 }
 echo $databasetype;
 
+$codeObject = new stdClass();
+$codeObject->mysql = "code for mysql";
+$codeObject->pgsql = "code for pgsql";
+$codeObject->mariadb = "code for mariadb";
+$codeObject->mongodb = "code for mongodb";
+
 try {
     // Create a PDO instance
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $usernameDB, $passwordDB);
@@ -222,12 +228,13 @@ try {
             justify-content: center;
             align-items: center;
             text-align: center;
-            gap:10px;
+            /* gap:10px; */
         }
         .quad1 h1{
             position: absolute;
             font-size: 2.5rem;
             top:15%;
+
         }
         .quad2,.quad4 {
             width: 300px; /* Fixed width for the div */
@@ -284,7 +291,8 @@ try {
         }
 
 
-        .dblist { align-items: center;
+        .dblist { 
+    align-items: center;
     appearance: none;
     background-color: #FCFCFD;
     border-radius: 4px;
@@ -344,7 +352,13 @@ try {
             <!-- <input type="submit" value="Choose this DB"> -->
             </form>
         </div>
-        <div class="quadrant quad2" id="output"></div>
+        <div class="quadrant quad2" id="output">
+            <?php 
+            if (!empty($databasetype)){
+                    echo $codeObject->$databasetype;
+                }
+            ?>
+        </div>
         <div class="quadrant quad3">
             <div class="options" >
                 <input type="radio" name="operation" id="update" value="update">
@@ -459,19 +473,19 @@ try {
             .catch(error => console.error(error));
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-    const outputDiv = document.getElementById('output');
+//     document.addEventListener('DOMContentLoaded', function () {
+//     const outputDiv = document.getElementById('output');
 
-    fetch('pdo.php')
-        .then(response => response.text())
-        .then(data => {
-            // Display the fetched HTML content in the output div
-            outputDiv.textContent = data;
-        })
-        .catch(error => {
-            outputDiv.textContent = 'Error fetching content: ' + error.message;
-        });
-});
+//     fetch('pdo.php')
+//         .then(response => response.text())
+//         .then(data => {
+//             // Display the fetched HTML content in the output div
+//             outputDiv.textContent = data;
+//         })
+//         .catch(error => {
+//             outputDiv.textContent = 'Error fetching content: ' + error.message;
+//         });
+// });
 
 
 </script>
