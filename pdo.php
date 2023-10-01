@@ -12,10 +12,10 @@ $databasetype = "mysql";
 if (isset($_POST["dbname"])) {
     $databasetype = $_POST["dbname"];
 }
-echo $databasetype;
+
 
 $codeObject = new stdClass();
-$codeObject->mysql = "code for mysql";
+$codeObject->mysql = "echo 'for mysql';";
 $codeObject->pgsql = "code for pgsql";
 $codeObject->mariadb = "code for mariadb";
 $codeObject->mongodb = "code for mongodb";
@@ -354,9 +354,12 @@ try {
         </div>
         <div class="quadrant quad2" id="output">
             <?php 
-            if (!empty($databasetype)){
-                    echo $codeObject->$databasetype;
-                }
+            // if (!empty($databasetype)){
+            //         echo $codeObject->$databasetype;
+            //     }
+            echo "<md-block> ### HELLO WORLD </md-block>";
+            echo "<md-block>```" . $codeObject->$databasetype . "```</md-block>";
+            echo "<code>" . $codeObject->$databasetype . "</code>";
             ?>
         </div>
         <div class="quadrant quad3">
@@ -489,5 +492,6 @@ try {
 
 
 </script>
+<script type="module" src="https://md-block.verou.me/md-block.js"></script>
 </html>
 
