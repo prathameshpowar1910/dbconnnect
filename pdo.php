@@ -15,10 +15,10 @@ if (isset($_POST["dbname"])) {
 
 
 $codeObject = new stdClass();
-$codeObject->mysql = "echo 'for mysql';";
-$codeObject->pgsql = "code for pgsql";
-$codeObject->mariadb = "code for mariadb";
-$codeObject->mongodb = "code for mongodb";
+$codeObject->mysql = "mysql.php";
+$codeObject->pgsql = "pgsql.php'";
+$codeObject->mariadb = "mariadb.php";
+$codeObject->mongodb = "mongodb.php";
 
 try {
     // Create a PDO instance
@@ -358,8 +358,9 @@ try {
             //         echo $codeObject->$databasetype;
             //     }
             echo "<md-block> ### HELLO WORLD </md-block>";
-            echo "<md-block>```" . $codeObject->$databasetype . "```</md-block>";
-            echo "<code>" . $codeObject->$databasetype . "</code>";
+            // echo "<md-block>```" . $codeObject->$databasetype . "```</md-block>";
+            $fileContent = file_get_contents($codeObject->$databasetype);
+            echo "<code>" . $fileContent . "</code>";
             ?>
         </div>
         <div class="quadrant quad3">
