@@ -354,13 +354,9 @@ try {
         </div>
         <div class="quadrant quad2" id="output">
             <?php 
-            // if (!empty($databasetype)){
-            //         echo $codeObject->$databasetype;
-            //     }
-            echo "<md-block> ### HELLO WORLD </md-block>";
-            // echo "<md-block>```" . $codeObject->$databasetype . "```</md-block>";
             $fileContent = file_get_contents($codeObject->$databasetype);
-            echo "<code>" . $fileContent . "</code>";
+            echo "<md-block>```php" . $fileContent . "```</md-block>";
+            // echo "<code>" . $fileContent . "</code>";
             ?>
         </div>
         <div class="quadrant quad3">
