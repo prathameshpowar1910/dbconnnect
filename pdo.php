@@ -19,6 +19,9 @@ $codeObject->mysql = "mysql.php";
 $codeObject->pgsql = "pgsql.php'";
 $codeObject->mariadb = "mariadb.php";
 $codeObject->mongodb = "mongodb.php";
+if ($databasetype=="mongodb") {
+
+}else {
 
 try {
     // Create a PDO instance
@@ -136,6 +139,7 @@ try {
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+}    
 ?>
 
 
@@ -348,6 +352,7 @@ try {
             <input class="dblist" type="submit" name="dbname" id="pgsql" value="pgsql" ">
             <!-- <label for="pgsql">PostGreSQL</label> -->
             <input class="dblist" type="submit" name="dbname" id="mariadb" value="mariadb" ">
+            <input class="dblist" type="submit" name="dbname" id="mongodb" value="mongodb" ">
             <!-- <label for="mariadb">MariaDB</label><br> -->
             <!-- <input type="submit" value="Choose this DB"> -->
             </form>
